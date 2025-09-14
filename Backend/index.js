@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 // Load environment variables
 dotenv.config();
@@ -11,8 +12,16 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(cors()); // Enable Cross-Origin Resource Sharing
-app.use(express.json()); // Allow the server to accept and parse JSON in request bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+const corsOptions = {
+  origin: ["http://localhost:5173/"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // --- Database Connection ---
 mongoose
